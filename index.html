@@ -11,6 +11,10 @@
   box-sizing: border-box;
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   font-family: Arial;
   background: #0f172a;
@@ -22,15 +26,21 @@ nav {
   position: fixed;
   width: 100%;
   top: 0;
-  background: #020617;
   padding: 15px;
-  text-align: center;
-  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  background: transparent;
+  transition: 0.3s;
+}
+
+nav.ativo {
+  background: rgba(2,6,23,0.8);
+  backdrop-filter: blur(10px);
 }
 
 nav a {
   color: white;
-  margin: 0 15px;
   text-decoration: none;
 }
 
@@ -53,20 +63,27 @@ nav a {
 
 .hero h1 {
   margin-top: 15px;
-  font-size: 36px;
+  font-size: 38px;
 }
 
-.hero p {
-  color: #cbd5e1;
+#typing {
+  color: #38bdf8;
+  margin-top: 10px;
 }
 
+/* BOTÃO */
 .btn {
   margin-top: 20px;
-  padding: 10px 20px;
-  background: #38bdf8;
-  border-radius: 10px;
+  padding: 12px 25px;
+  background: linear-gradient(45deg, #38bdf8, #0ea5e9);
+  border-radius: 12px;
   text-decoration: none;
   color: white;
+  transition: 0.3s;
+}
+
+.btn:hover {
+  transform: scale(1.05);
 }
 
 /* SEÇÕES */
@@ -92,13 +109,13 @@ section {
 }
 
 .card:hover {
-  transform: translateY(-10px);
+  transform: translateY(-10px) scale(1.03);
 }
 
 /* ANIMAÇÃO */
 .hidden {
   opacity: 0;
-  transform: translateY(30px);
+  transform: translateY(40px);
   transition: 1s;
 }
 
@@ -118,7 +135,7 @@ footer {
 
 <body>
 
-<nav>
+<nav id="nav">
   <a href="#home">Início</a>
   <a href="#sobre">Sobre</a>
   <a href="#projetos">Projetos</a>
@@ -128,16 +145,13 @@ footer {
 <div class="hero" id="home">
   <img src="foto.jpg" class="foto">
   <h1>Cauã Souza</h1>
-  <p>Desenvolvedor em formação 💻</p>
+  <p id="typing"></p>
   <a href="#projetos" class="btn">Ver projetos</a>
 </div>
 
 <section id="sobre" class="hidden">
   <h2>Sobre mim</h2>
-  <p>
-    Buscando minha primeira oportunidade na área de tecnologia.
-    Evoluindo com projetos práticos e estudo constante.
-  </p>
+  <p>Buscando minha primeira oportunidade na área de tecnologia.</p>
 </section>
 
 <section id="projetos" class="hidden">
@@ -163,7 +177,8 @@ footer {
 
 <section id="contato" class="hidden">
   <h2>Contato</h2>
-  <p>Email: seuemail@email.com</p>
+  <p>Email: cauavitorsouzaleite@gmail.com</p>
+  <p>Telefone: (87)999174859</p>
 </section>
 
 <footer>
@@ -171,16 +186,36 @@ footer {
 </footer>
 
 <script>
+// NAVBAR efeito
+window.addEventListener("scroll", () => {
+  const nav = document.getElementById("nav");
+  nav.classList.toggle("ativo", window.scrollY > 50);
+});
+
+// ANIMAÇÃO SCROLL
 const elements = document.querySelectorAll(".hidden");
 
 window.addEventListener("scroll", () => {
   elements.forEach(el => {
-    const top = el.getBoundingClientRect().top;
-    if (top < window.innerHeight - 50) {
+    if (el.getBoundingClientRect().top < window.innerHeight - 50) {
       el.classList.add("show");
     }
   });
 });
+
+// EFEITO DIGITAÇÃO
+const texto = "Desenvolvedor em formação 💻";
+let i = 0;
+
+function digitar() {
+  if (i < texto.length) {
+    document.getElementById("typing").innerHTML += texto.charAt(i);
+    i++;
+    setTimeout(digitar, 50);
+  }
+}
+
+digitar();
 </script>
 
 </body>
